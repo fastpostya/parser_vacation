@@ -3,7 +3,7 @@ import requests
 from utils.no_vac_error import NoVacationError
 from utils.engine_classes import Engine
 from config import super_job_key
-from utils.vacancy import Vacancy
+from utils.vacancy import SJVacancy
 
 
 class Superjob(Engine):
@@ -57,7 +57,7 @@ class Superjob(Engine):
                 for vacancy in vacancies:
                     if "id" in vacancy:
                         # без id новый объект Vacancy не создаем
-                        new_vacancy = Vacancy(vacancy["id"])
+                        new_vacancy = SJVacancy(vacancy["id"])
                         if "profession" in vacancy:
                             new_vacancy.title = vacancy["profession"]
                         if "payment_from" in vacancy:
@@ -68,7 +68,7 @@ class Superjob(Engine):
                             new_vacancy.currency = vacancy["currency"]
                         if "vacancyRichText" in vacancy:
                             new_vacancy.description = vacancy["vacancyRichText"]
-                        if ("client" in vacancy) and ("url" in vacancy):
+                        if ("client" in vacancy) and ("url" in vacancy["client"]):
                             new_vacancy.url = vacancy["client"]["url"]
                         if "firm_name" in vacancy:
                             new_vacancy.firm_name = vacancy["firm_name"]

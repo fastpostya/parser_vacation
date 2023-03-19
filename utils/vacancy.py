@@ -8,17 +8,25 @@ class Vacancy:
     - url:str - адрес вакансии,
     - description:str - описание вакансии
     - firm_name:str -название организации-работодателя
+    - service:str- название сайта, с которого получены вакансии.
+    Принимает значения HH и SJ
       """
-    __slots__ = ('id', 'title', 'salary_from', 'salary_to', 'url', \
-        'description', 'currency', 'firm_name')
+    __slots__ = ('id', 'title', 'salary_from', 'salary_to', 'salary', 'url', \
+        'description', 'currency', 'firm_name', 'service')
 
-    def __init__(self, id, title: str = "", salary_from: float= 0.0, \
-            salary_to: float = 0.0, url: str = "", description: str ="",\
-            currency: str ="", firm_name: str =""):
+    def __init__(self, id, title: str = "", salary_from: float = 0.0,\
+            salary_to: float = 0.0,
+            salary: float = 0.0, url: str = "", description: str = "",\
+            currency: str = "", firm_name: str = ""):
         self.id = id
         self.title = title
         self.salary_from = salary_from
         self.salary_to = salary_to
+        self.salary = salary
+        if self.salary_to != 0.0 :
+            self.salary = self.salary_to
+        else:
+            self.salary = self.salary_from
         self.currency = currency
         self.url = url
         self.description = description
@@ -39,22 +47,22 @@ class CountMixin:
         """
         pass
 
+
 class HHVacancy(Vacancy):  # add counter mixin
     """ HeadHunter Vacancy """
-    def __init__(self, *kvargs):
-        Vacancy.__init__(*kvargs):
-        self.salary = self.salary_to
+    def __init__(self, id, *kvargs):
+        Vacancy.__init__(self, id, *kvargs)
+        self.service = "HH"
 
     def __str__(self):
         return f'HH: {self.firm_name}, зарплата: {self.salary} руб/мес'
 
 
-
 class SJVacancy(Vacancy):  # add counter mixin
     """ SuperJob Vacancy """
-    def __init__(self, *kvargs):
-        Vacancy.__init__(*kvargs):
-        self.salary = self.salary_to
+    def __init__(self, id, *kvargs):
+        Vacancy.__init__(self, id, *kvargs)
+        self.service = "SJ"
 
     def __str__(self):
         return f'SJ: {self.firm_name}, зарплата: {self.salary} руб/мес'
