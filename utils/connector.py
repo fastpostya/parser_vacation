@@ -24,8 +24,9 @@ class Connector:
     :param data_file:str - the path to the json-file. It has getter and setter.
     :param text: str - the text from the file
     :param save_date: list - list for saving in file
+    :param delete_query: dict - dict for deleting data
     :param select_query: dict - dict for selection data
-    :param 
+    :param
     """
     __data_file = None
 
@@ -95,7 +96,7 @@ class Connector:
     def save_date(self, data: dict | list) -> None:
         """Saving data in file data_file"""
         with open(self.data_file, "w", encoding="utf-8") as file:
-            json.dump(data, file)
+            json.dump(data, file, ensure_ascii=False)
             return data
 
     def __connect(self) -> str | Exception:
@@ -103,9 +104,9 @@ class Connector:
         Cheking if file <path> exist, cheking file creating date and time.
         If file doesn't exist - it will be created.
         """
-        if self.is_file_exist(self.data_file) and\
-                self.is_file_not_old(self.data_file):
-            self.text = self.read_file()
+        # if self.is_file_exist(self.data_file):
+        #  and self.is_file_not_old(self.data_file):
+        self.text = self.read_file()
         return self.text
 
     def insert(self, data: str) -> str:
@@ -128,8 +129,9 @@ class Connector:
                 # there are many elements in file
                 for file_elements in date_from_file:
                     list_save.append(file_elements)
-        if data != "" and self.is_valid_json(data):
-            new_data = json.loads(data)
+        if data: # != "" and self.is_valid_json(data):
+            # new_data = json.loads(data)
+            new_data = data
             if isinstance(new_data, dict):
                 # new_date is one element
                 list_save.append(new_data)
@@ -143,10 +145,10 @@ class Connector:
             raise KeyError("Некорректные данные")
         if len(list_save) == 1:
             self.save_date(list_save[0])
-            self.text = json.dumps(list_save[0])
+            self.text = json.dumps(list_save[0], ensure_ascii=False)
         else:
             self.save_date(list_save)
-            self.text = json.dumps(list_save)
+            self.text = json.dumps(list_save, ensure_ascii=False)
         return self.text
 
     def select(self, query: dict) -> list | KeyError:
@@ -203,7 +205,7 @@ class Connector:
                             element[first_key]):
                         new_list.append(element)
                 self.save_date(new_list)
-                self.text = json.dumps(new_list)
+                self.text = json.dumps(new_list, ensure_ascii=False)
                 return new_list
             else:
                 raise (KeyError("Неправильный формат словаря для отбора данных"))
@@ -223,25 +225,25 @@ def try_insert():
     del_file(path_insert)
     # ----INSERT----
     connector_insert = Connector(path_insert)
-    connector_insert.insert('{"key4": "value4"}')
+    connector_insert.insert({"key4": "value4"})
     print(connector_insert.text)
-    connector_insert.insert('{"key5": "value5"}')
+    connector_insert.insert({"key5": "value5"})
     print(connector_insert.text)
     try:
-        connector_insert.insert('[{"key6": "value6"}, {"text1": "1235"}]')
+        connector_insert.insert([{"key6": "value6"}, {"text1": "1235"}])
         print(connector_insert.text)
     except:
-        print('ERROR:{"key6": "value6", "text1": "1235"}')
+        print('ERROR: [{"key6": "value6"}, {"text1": "1235"}]')
     try:
-        connector_insert.insert('[{"key6": "value6", "text2": "4587"}]')
+        connector_insert.insert([{"key6": "value6", "text2": "4587"}])
         print(connector_insert.text)
     except:
-        print('ERROR: {"key6": "value6"}, {"text2": "4587"}')
+        print('ERROR: [{"key6": "value6", "text2": "4587"}]')
     try:
-        connector_insert.insert('[{"key6": "value6", "tex32": "2587"}]')
+        connector_insert.insert([{"key6": "value6", "tex32": "2587"}])
         print(connector_insert.text)
     except:
-        print('ERROR: {"key6": "value6"}, "tex32": "2587"}')
+        print('ERROR: [{"key6": "value6", "tex32": "2587"}]')
     # # # try:
     # connector_insert.insert('')
     # print(connector_insert.text)
@@ -265,18 +267,18 @@ def try_delete():
     path_delete = os.sep.join(["tests", "test_files", "test_delete.json"])
     del_file(path_delete)
     connector_del = Connector(path_delete)
-    connector_del.insert('[{"key4": "value4"}, {"key5": "value5"}, {"key6": "value6"}, {"text1": "1235"}, {"key6": "value6", "text2": "4587"}]')
+    connector_del.insert([{"key4": "value4"}, {"key5": "value5"}, {"key6": "value6"}, {"text1": "1235"}, {"key6": "value6", "text2": "4587"}])
     connector_del.delete({"text1": "1235"})
     connector_del.delete({"key5": "value5"})
     connector_del.delete({"key4": "value4"})
     connector_del.delete({"key6": "value6"})
-    connector_del.insert('[{"key4": "value4"}, {"key5": "value5"}, {"key6": "value6"}, {"text1": "1235"}, {"key6": "value6", "text2": "4587"}]')
+    connector_del.insert([{"key4": "value4"}, {"key5": "value5"}, {"key6": "value6"}, {"text1": "1235"}, {"key6": "value6", "text2": "4587"}])
 
     print(connector_del.text)
 
 if __name__ == '__main__':
-    try_insert()
-    # try_select()
+    # try_insert()
+    try_select()
     # try_delete()
 
 
