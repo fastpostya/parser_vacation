@@ -1,3 +1,4 @@
+import json
 from json import JSONDecodeError
 import click
 from config import super_job_key, keyword, file_path
@@ -5,6 +6,8 @@ from utils.superjob import Superjob
 from utils.hh import HH
 from utils.no_vac_error import NoVacationError
 from utils.connector import Connector
+from utils.func import get_vacations_from_file
+from utils.jobs_classes import sorting, get_top
 from utils.vacancy import Vacancy
 
 import pprint
@@ -18,122 +21,105 @@ def clrscr():
 def get_from_sj(file_path: str):
     """Get request from superjob.ru and insert date in file 'file_path'"""
     print("Делаем запрос на сайт Superjob")
-    clear = input("Очистить файл?\n y/n")
+    clear = input("Очистить файл?\n Подтвердите очистку - y.")
 
      # Создаем экземпляр класса Superjob для поиска вакансий на сайте superjob
     superjob = Superjob()
     try:
-        answer = superjob.get_request(keyword, "Тверь")
+        answer = superjob.get_request(keyword)  # , "Магадан")
     except ConnectionError as error:
         print(error)
+        input("Для продолжения нажмите любую клавишу.")
+        return
     except NoVacationError as error:
         print(error)
+        input("Для продолжения нажмите любую клавишу.")
+        return
 
     connector = superjob.get_connector(file_path)
     if clear == "y":
-        connector.save_date("")
+        connector.save_date(None)
 
     try:
         connector.insert(answer)
     except KeyError as error:
         print(error)
+        input("Для продолжения нажмите любую клавишу.")
+        return
     except JSONDecodeError as error:
         print(error)
-    # with open(file_path, "r", encoding="utf-8") as file:
-    #     print(file.read())
-    # print(connector.text)
+        input("Для продолжения нажмите любую клавишу.")
+        return
 
 
 def get_from_hh(file_path: str):
-    """Get request from superjob.ru and insert date in file 'file_path'"""
-    print("Делаем запрос на сайт Superjob")
-    clear = input("Очистить файл?\n y/n")
+    """Get request from hh.ru and insert date in file 'file_path'"""
+    print("Делаем запрос на сайт hh.ru")
+    clear = input("Очистить файл?\n Подтвердите очистку - y.")
     # Создаем экземпляр класса HHVacancy
     hh = HH()
     try:
-        answer = hh.get_request(keyword, "1202")
+        answer = hh.get_request(keyword) #, "1202")
     except ConnectionError as error:
         print(error)
+        input("Для продолжения нажмите любую клавишу.")
+        return
     except NoVacationError as error:
         print(error)
+        input("Для продолжения нажмите любую клавишу.")
+        return
     connector_hh = hh.get_connector(file_path)
     if clear == "y":
-        connector_hh.save_date("")
+        connector_hh.save_date(None)
     try:
         connector_hh.insert(answer)
     except KeyError as error:
         print(error)
+        input("Для продолжения нажмите любую клавишу.")
+        return
     except JSONDecodeError as error:
         print(error)
-    # print(connector_hh.text)
-
-
-def get_vacations_from_file(file_path: str):
-    list_vacancies = []
-    connector = Connector(file_path)
-    vacancies = connector.read_file()
-    if vacancies:
-        for vacancy in vacancies:
-            if "id" in vacancy:
-                # без id новый объект Vacancy не создаем
-                id = vacancy["id"]
-                title = ""
-                salary_from = ""
-                salary_to = ""
-                url = ""
-                description = ""
-                currency = ""
-                firm_name = ""
-                if "profession" in vacancy:
-                    title = vacancy["profession"]
-                    service = "SJ"
-                    if "payment_from" in vacancy:
-                        salary_from = vacancy["payment_from"]
-                    if "payment_to" in vacancy:
-                        salary_to = vacancy["payment_to"]
-                    if "currency" in vacancy:
-                        currency = vacancy["currency"]
-                    if "vacancyRichText" in vacancy:
-                        description = vacancy["vacancyRichText"]
-                    if ("client" in vacancy) and ("url" in vacancy["client"]):
-                        url = vacancy["client"]["url"]
-                    if "firm_name" in vacancy:
-                        firm_name = vacancy["firm_name"]
-
-                if "name" in vacancy:
-                    title = vacancy["name"]
-                    service = "HH"
-                    if vacancy["salary"] and ("salary" in vacancy) and ("from" in vacancy["salary"]):
-                        salary_from = vacancy["salary"]["from"]
-                    if vacancy["salary"] and ("salary" in vacancy) and ("to" in vacancy["salary"]):
-                        salary_to = vacancy["salary"]["to"]
-                    if vacancy["salary"] and ("salary" in vacancy) and ("currency" in vacancy["salary"]):
-                        currency = vacancy["salary"]["currency"]
-                    if "requirement" in vacancy:
-                        description = vacancy["requirement"]
-                    if "url" in vacancy:
-                        url = vacancy["url"]
-                    if ("employer" in vacancy) and ("name" in vacancy["employer"]):
-                        firm_name = vacancy["employer"]["name"]
-                new_vacancy = Vacancy(id, title, salary_from, salary_to, url, description, currency, firm_name, service)
-                list_vacancies.append(new_vacancy)
-    # else:
-
-    print(len(vacancies))
-
+        input("Для продолжения нажмите любую клавишу.")
+        return
 
 
 def get_data_from_file(file_path: str):
     file_connector = Connector(file_path)
     try:
         file_connector.is_file_not_old(file_path)
-    except:
+    except TimeoutError:
+        clrscr()
         print("Файл устарел. Сделайте новый запрос.")
         input("Для продолжения нажмите любую клавишу.")
 
-    get_vacations_from_file(file_path)
-    input("Для продолжения нажмите любую клавишу.")
-    return
+    try:
+        list_vacancies = get_vacations_from_file(file_path)
+    except JSONDecodeError:
+        print("Неправильный формат данных в файле. Пожалуйста, сделайте новый запрос.")
+        input("Для продолжения нажмите любую клавишу.")
+    clrscr()
+    print("Выберите нужное действие:")
+    print("1 - Напечатать вакансии")
+    print("2 - Отсортировать вакансии по зарплате.")
+    print("3 - Вывести 10 вакансий с наивысшей оплатой.")
+    result = input()
+
+    match result:
+        case ("1"):
+            print("Вакансий в файле:", len(list_vacancies))
+            for i in list_vacancies:
+                print(i)
+            input("Для продолжения нажмите любую клавишу.")
+        case ("2"):
+            sorted_list = sorting(list_vacancies)
+            for i in sorted_list:
+                print(i)
+            input("Для продолжения нажмите любую клавишу.")
+        case ("3"):
+            top_vacancies = get_top(list_vacancies, 10)
+            for i in top_vacancies:
+                print(i)
+            input("Для продолжения нажмите любую клавишу.")
 
 
 def main():
@@ -162,8 +148,7 @@ def main():
         except EOFError:
             exit()
 
-    # get_from_hh(file_path)
-    # get_from_hh(file_path)
+
 
 
 

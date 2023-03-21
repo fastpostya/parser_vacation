@@ -15,7 +15,7 @@ class Connector:
     - read_file: str - getting text from file data_file
     - is_file_not_old: bool - checking if file not older than number days
     - save_date: str - saving data in file data_file
-    - insert: str - insert date in file with saving it's structure.
+    - insert: dict | list - insert data in file with saving it's structure.
     - select: list | KeyError - selecting dates from file.
         The key is the field for filtering. The value is the desired value.
     - delete: list | KeyError - deleting date, using query.
@@ -26,7 +26,9 @@ class Connector:
     :param save_date: list - list for saving in file
     :param delete_query: dict - dict for deleting data
     :param select_query: dict - dict for selection data
-    :param
+    :param  days_outdate: int - the number of days after which the file
+    is outdated
+
     """
     __data_file = None
 
@@ -37,13 +39,15 @@ class Connector:
         self.select_query = {}
         self.delete_query = {}
         self.__connect()
+        # the number of days after which the file is outdated
+        self.days_outdate = 1
 
     @property
-    def data_file(self):
+    def data_file(self) -> str:
         return self.__data_file
 
     @data_file.setter
-    def data_file(self, path: str) -> bool:
+    def data_file(self, path: str) -> str:
         # код для установки файла
         self.__data_file = path
         return self.__data_file
@@ -54,7 +58,7 @@ class Connector:
         return os.path.exists(path)
 
     def read_file(self) -> str:
-        """ Open the file data_file and returns it's text"""
+        """ Opens the file data_file and returns it's text"""
         path = self.data_file
         if self.is_file_exist(path):
             with open(path, "r", encoding="utf-8") as file:
@@ -68,12 +72,14 @@ class Connector:
             file.close()
             return ""
 
-    @staticmethod
-    def is_file_not_old(path: str, days: int = 1) -> bool | TimeoutError:
+    def is_file_not_old(self, path: str) -> bool | TimeoutError:
         """ Cheking file creating date and time. If the file was
         creating more then <days> ago raises TimeoutError,
-        in other case returns True
+        in other case returns True.
         """
+        # path = self.data_file
+        # the number of days after which the file is outdated
+        days = self.days_outdate
         file_time = os.path.getmtime(path)
         file_time = datetime.datetime.fromtimestamp(file_time)
         time_now = datetime.datetime.now()
@@ -81,6 +87,7 @@ class Connector:
         if time_delta > datetime.timedelta(days=days):
             raise TimeoutError("Файл с данными устарел.\
  Пожалуйста, обновите его!")
+        # self.__is_file_not_old = True
         return True
 
     @staticmethod
@@ -105,19 +112,20 @@ class Connector:
         If file doesn't exist - it will be created.
         """
         # if self.is_file_exist(self.data_file):
-        #  and self.is_file_not_old(self.data_file):
+        #  and self.is_file_not_old:
         self.text = self.read_file()
         return self.text
 
-    def insert(self, data: str) -> str:
+    def insert(self, data: dict | list) -> str:
         """
         Insert date in file with saving it's structure.
-        :param data: str - date in JSON format.
+        :param data: dict | list - data in JSON format.
         In case empty or wrong date raises KeyError.
         Returns text - date with insertion.
         """
         # open file and read date from file
         # file was checked while initialisation
+        self.read_file()
         list_save = []
         if self.text != "":
             # not empty file
@@ -129,8 +137,7 @@ class Connector:
                 # there are many elements in file
                 for file_elements in date_from_file:
                     list_save.append(file_elements)
-        if data: # != "" and self.is_valid_json(data):
-            # new_data = json.loads(data)
+        if data:
             new_data = data
             if isinstance(new_data, dict):
                 # new_date is one element
@@ -150,6 +157,28 @@ class Connector:
             self.save_date(list_save)
             self.text = json.dumps(list_save, ensure_ascii=False)
         return self.text
+
+    # def get_json_from_file(self) -> dict:
+    #     """Getting json from param text, that was getted from file
+    #     """
+    #     list_save = []
+    #     if self.text != "":
+    #         # not empty file
+    #         date_from_file = json.loads(self.text)
+    #         if isinstance(date_from_file, dict):
+    #             # there is one element in file
+    #             list_save.append(date_from_file)
+    #         elif isinstance(date_from_file, list):
+    #             # there are many elements in file
+    #             for file_elements in date_from_file:
+    #                 list_save.append(file_elements)
+    #     if len(list_save) == 1:
+    #         self.save_date(list_save[0])
+    #         self.text = json.dumps(list_save[0], ensure_ascii=False)
+    #     else:
+    #         self.save_date(list_save)
+    #         self.text = json.dumps(list_save, ensure_ascii=False)
+    #     return self.text
 
     def select(self, query: dict) -> list | KeyError:
         """

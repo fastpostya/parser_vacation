@@ -28,7 +28,7 @@ class Superjob(Engine):
         cls.superjob_key = super_job_key
 
     def get_request(self, keywords: str = "", town: str = "",
-                    page: int = 1, count: int = 5) -> None:
+                    page: int = 1, count: int = 100) -> None:
         """Метод отправляет GET- запрос к сайту и возвращает данные
         в формате JSON.
         Атрибуты:
@@ -46,9 +46,9 @@ class Superjob(Engine):
         my_auth_data = {'X-Api-App-Id': self.superjob_key}
     #    здесь передаются параметры запроса
         params = {"keywords": self.keywords,
-                "town": self.town,
-                "page": self.page,
-                "count": self.count}
+                    "town": self.town,
+                    "page": self.page,
+                    "count": self.count}
         response = requests.get('https://api.superjob.ru/2.0/vacancies/',
                                 headers=my_auth_data, params=params)
 

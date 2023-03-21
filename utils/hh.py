@@ -15,15 +15,10 @@ class HH(Engine):
         """Инициализация объекта класса HH"""
         pass
 
-    # @classmethod
-    # def get_superjob_key(cls) -> None:
-    #     """Метод класса записывает в переменную класса superjob_key
-    #     значение ключа для доступа к сайту superjob из переменной
-    #     super_job_key, которая находится в файле config.py"""
-    #     cls.superjob_key = super_job_key
-
-    def get_request(self, keywords: str = "", area: int =113,\
-            page: int = 1, per_page: int = 50) -> None:
+    def get_request(self, keywords: str = "",
+                    area: int =113,
+                    per_page: int = 100,
+                    page: int = 10,) -> None:
         """Метод отправляет GET- запрос к сайту и возвращает данные
         в формате JSON.
         Атрибуты:
@@ -44,16 +39,16 @@ integer
         """
         self.keywords = keywords
         # self.town = town
-        self.page = page
         self.count = per_page
+        self.page = page
         self.area = area
 
 
         # здесь передаются параметры запроса
         params = {'per_page': self.count,
                     'text': self.keywords,
-                    'page':self.page,
                     'per_page': self.count,
+                    'page':self.page,
                     'User-Agent': 'MyApp/1.0 (something@useful.com)',
                     'area': self.area}
         # per_page=10&page=199 (выдача с 1991 по 2000 вакансию)

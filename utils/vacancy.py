@@ -17,24 +17,24 @@ class Vacancy:
     def __init__(self, id, title: str = "", salary_from: float = 0.0,\
             salary_to: float = 0.0,
             salary: float = 0.0, url: str = "", description: str = "",\
-            currency: str = "", firm_name: str = ""):
+            currency: str = "", firm_name: str = "", service: str = ""):
         self.id = id
         self.title = title
         self.salary_from = salary_from
         self.salary_to = salary_to
         self.salary = salary
-        if self.salary_to != 0.0 :
-            self.salary = self.salary_to
-        else:
-            self.salary = self.salary_from
         self.currency = currency
         self.url = url
         self.description = description
         self.firm_name = firm_name
+        self.service = service
 
     def __str__(self):
-        return f'Vacancy(id:{self.id}, {self.title}, {self.salary_from} - {self.salary_to} {self.currency}, {self.firm_name})'#\n\
+        return f'{self.service} id:{self.id}, {self.title}, {self.salary_from} - {self.salary_to} {self.currency}, {self.firm_name}'
 # {self.url}\n{self.description})'
+
+    def __repr__(self):
+        return f'{self.service} id:{self.id}, {self.title}, {self.salary_from} - {self.salary_to} {self.currency}, {self.firm_name}'
 
 
 class CountMixin:
