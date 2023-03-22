@@ -7,3 +7,4 @@ venv/
 config.py
 result.json
 result_hh.json
+.coverage
