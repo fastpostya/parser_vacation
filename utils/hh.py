@@ -18,87 +18,56 @@ class HH(Engine):
     def get_request(self, keywords: str = "",
                     area: int =113,
                     per_page: int = 100,
-                    page: int = 10,) -> None:
+                    page: int = 0,) -> None:
         """Метод отправляет GET- запрос к сайту и возвращает данные
         в формате JSON.
         Атрибуты:
         - keywords: str - ключевое слово для поиска вакансии
-        - town: str|i- название города для поиска или его ID
-        - area
+        - area: str|i-название города для поиска или его ID
+            (113 - регион Россия, 1 - Москва, 1202 -Новосибирск)
         - page: int -Номер страницы результата поиска
         - per_page: int - Количество результатов на страницу поиска.
-
-
-integer
-Количество элементов на странице выдачи. Поддерживаются стандартные параметры пагинации. Значение по умолчанию и максимальное значение per_page составляет 10000
-
-page
-integer
-Порядковый номер страницы в выдаче. Поддерживаются стандартные параметры пагинации. По умолчанию нумерация начинается с 0 страницы
-
         """
         self.keywords = keywords
         # self.town = town
         self.count = per_page
         self.page = page
         self.area = area
+        list_vacations = []
+        is_response_successful = False
+        for i in range(5):
+            self.page = i
 
+            # здесь передаются параметры запроса
+            params = {'per_page': self.count,
+                        'text': self.keywords,
+                        'per_page': self.count,
+                        'page':self.page,
+                        'User-Agent': 'MyApp/1.0 (something@useful.com)',
+                        'area': self.area}
 
-        # здесь передаются параметры запроса
-        params = {'per_page': self.count,
-                    'text': self.keywords,
-                    'per_page': self.count,
-                    'page':self.page,
-                    'User-Agent': 'MyApp/1.0 (something@useful.com)',
-                    'area': self.area}
-        # per_page=10&page=199 (выдача с 1991 по 2000 вакансию)
-        # 'area': "113" - регион Россия
-#         1 - Москва
-        # 1202 -Новосибирск
+            url = "https://api.hh.ru/vacancies"
+            response = requests.get(url, params=params)
 
-        url = "https://api.hh.ru/vacancies"
-        response = requests.get(url, params=params)
-
-        if response.status_code:
-            text_json = json.loads(response.text)
-            if "bad_argument" in text_json:
-                raise NoVacationError(f"Ошибочный ответ {text_json}")
-            else:
-                vacancies = text_json["items"]
-                if len(vacancies):
-                    return vacancies
-                    # for vacancy in vacancies:
-                    #     if "id" in vacancy:
-                    #         # без id новый объект HHVacancy не создаем
-                    #         new_vacancy = HHVacancy(vacancy["id"])
-                    #         if "name" in vacancy:
-                    #             new_vacancy.title = vacancy["name"]
-                    #         if vacancy["salary"] and ("salary" in vacancy) and ("from" in vacancy["salary"]):
-                    #             new_vacancy.salary_from = vacancy["salary"]["from"]
-                    #         if vacancy["salary"] and ("salary" in vacancy) and ("to" in vacancy["salary"]):
-                    #             new_vacancy.salary_to = vacancy["salary"]["to"]
-                    #         if vacancy["salary"] and ("salary" in vacancy) and ("currency" in vacancy["salary"]):
-                    #             new_vacancy.currency = vacancy["salary"]["currency"]
-                    #         if "requirement" in vacancy:
-                    #             new_vacancy.description = vacancy["requirement"]
-                    #         if "url" in vacancy:
-                    #             new_vacancy.url = vacancy["url"]
-                    #         if ("employer" in vacancy) and ("name" in vacancy["employer"]):
-                    #             new_vacancy.firm_name = vacancy["employer"]["name"]
-                    #         self.elements.append(new_vacancy)
-
-                            # vacancy["requirement"],
-                            # vacancy["response_url"],
-                            # vacancy["apply_alternate_url"],
-                            # vacancy["url"],
-                            # vacancy["employer"]["name"],
-                            # vacancy["snippet"]["requirement"],
-                            # vacancy["snippet"]["responsibility"]
+            if response.status_code:
+                is_response_successful = True
+                text_json = json.loads(response.text)
+                if "bad_argument" in text_json:
+                    raise NoVacationError(f"Ошибочный ответ {text_json}")
                 else:
-                    raise NoVacationError(f"Вакансий с заданными параметрами не найдено:\n\
-keywords={keywords}, page={page}, per_page={per_page}, area={self.area}")
+                    vacancies = text_json["items"]
+                    if len(vacancies):
+                        for vacancy in vacancies:
+                            list_vacations.append(vacancy)
+            if not is_response_successful:
+                raise ConnectionError(response, response.text)
+        if len(list_vacations):
+            print(f"Добавлено {len(list_vacations)} вакансий")
+            input("Для продолжения нажмите любую клавишу.")
+            return list_vacations
         else:
-            raise ConnectionError(response, response.text)
+            raise NoVacationError(f"Вакансий с заданными параметрами не найдено:\n\
+keywords={keywords}, town={town}, page={page}, count={count}")
 
     @staticmethod
     def get_connector(file_name):

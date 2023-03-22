@@ -9,5 +9,5 @@ class Engine(ABC):
 
     @staticmethod
     def get_connector(file_name):
-            """ Возвращает экземпляр класса Connector """
+            """ return the instance of class Connector """
             pass

@@ -28,7 +28,7 @@ class Superjob(Engine):
         cls.superjob_key = super_job_key
 
     def get_request(self, keywords: str = "", town: str = "",
-                    page: int = 1, count: int = 100) -> None:
+                    page: int = 0, count: int = 100) -> None:
         """Метод отправляет GET- запрос к сайту и возвращает данные
         в формате JSON.
         Атрибуты:
@@ -42,53 +42,37 @@ class Superjob(Engine):
         self.town = town
         self.page = page
         self.count = count
+        list_vacations = []
+        is_response_successful = False
         # здесь передается ключ доступа
         my_auth_data = {'X-Api-App-Id': self.superjob_key}
-    #    здесь передаются параметры запроса
-        params = {"keywords": self.keywords,
-                    "town": self.town,
-                    "page": self.page,
-                    "count": self.count}
-        response = requests.get('https://api.superjob.ru/2.0/vacancies/',
-                                headers=my_auth_data, params=params)
+        for i in range(5):
+            self.page = i
+            # здесь передаются параметры запроса
+            params = {"keywords": self.keywords,
+                        "town": self.town,
+                        "page": self.page,
+                        "count": self.count}
+            response = requests.get('https://api.superjob.ru/2.0/vacancies/',
+                                    headers=my_auth_data,
+                                    params=params)
 
-        if response.status_code:
-            vacancies = json.loads(response.text)['objects']
-            if len(vacancies):
-                return vacancies
-                # for vacancy in vacancies:
-                #     if "id" in vacancy:
-                #         # без id новый объект Vacancy не создаем
-                #         new_vacancy = SJVacancy(vacancy["id"])
-                #         if "profession" in vacancy:
-                #             new_vacancy.title = vacancy["profession"]
-                #         if "payment_from" in vacancy:
-                #             new_vacancy.salary_from = vacancy["payment_from"]
-                #         if "payment_to" in vacancy:
-                #             new_vacancy.salary_to = vacancy["payment_to"]
-                #         if "currency" in vacancy:
-                #             new_vacancy.currency = vacancy["currency"]
-                #         if "vacancyRichText" in vacancy:
-                #             new_vacancy.description = vacancy["vacancyRichText"]
-                #         if ("client" in vacancy) and ("url" in vacancy["client"]):
-                #             new_vacancy.url = vacancy["client"]["url"]
-                #         if "firm_name" in vacancy:
-                #             new_vacancy.firm_name = vacancy["firm_name"]
-                #         self.elements.append(new_vacancy)
-
-                # print(vacancy["id"], vacancy["profession"], vacancy["payment_from"], \
-                # vacancy["payment_to"], vacancy["currency"],\
-                # vacancy["candidat"], vacancy["vacancyRichText"], \
-                # vacancy["firm_name"], vacancy["firm_activity"], \
-                # vacancy["client"]["description"], vacancy["client"]["url"], \
-                # vacancy["link"], vacancy["address"],\
-                # vacancy["town"]["title"], vacancy["phones"], vacancy["firm_name"], \
-                # vacancy["firm_activity"], vacancy["age_from"], vacancy["age_to"], vacancy["gender"])
-            else:
-                raise NoVacationError(f"Вакансий с заданными параметрами не найдено:\n\
-keywords={keywords}, town={town}, page={page}, count={count}")
-        else:
+            if response.status_code:
+                is_response_successful = True
+                vacancies = json.loads(response.text)['objects']
+                if len(vacancies):
+                    for vacancy in vacancies:
+                        list_vacations.append(vacancy)
+        if not is_response_successful:
             raise ConnectionError(response, response.text)
+        if len(list_vacations):
+            print(f"Добавлено {len(list_vacations)} вакансий")
+            input("Для продолжения нажмите любую клавишу.")
+            return list_vacations
+        else:
+            raise NoVacationError(f"Вакансий с заданными параметрами не найдено:\n\
+keywords={keywords}, town={town}, page={page}, count={count}")
+
 
     @staticmethod
     def get_connector(file_name: str) -> Connector:

@@ -36,16 +36,16 @@ class Vacancy:
     def __repr__(self):
         return f'{self.service} id:{self.id}, {self.title}, {self.salary_from} - {self.salary_to} {self.currency}, {self.firm_name}'
 
+# on future
+# class CountMixin:
 
-class CountMixin:
-
-    @property
-    def get_count_of_vacancy(self):
-        """
-        Вернуть количество вакансий от текущего сервиса.
-        Получать количество необходимо динамически из файла.
-        """
-        pass
+#     @property
+#     def get_count_of_vacancy(self):
+#         """
+#         Вернуть количество вакансий от текущего сервиса.
+#         Получать количество необходимо динамически из файла.
+#         """
+#         pass
 
 
 class HHVacancy(Vacancy):  # add counter mixin

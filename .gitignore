@@ -1,5 +1,9 @@
 useful_but_not_used/
 
 __pycache__
-tests/
-vevv/
+venv/
+.vscode/
+
+config.py
+result.json
+result_hh.json
