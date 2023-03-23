@@ -19,18 +19,18 @@ Methods:
 
     Atributes:
 
-    :param data_file:str - the path to the json-file. It has getter and setter.
-    :param text: str - the text from the file
-    :param save_date: list - list for saving in file
-    :param delete_query: dict - dict for deleting data
-    :param select_query: dict - dict for selection data
-    :param  days_outdate: int - the number of days after which the file
+*   data_file:str - the path to the json-file. It has getter and setter.
+*   text: str - the text from the file
+*   save_date: list - list for saving in file
+*   delete_query: dict - dict for deleting data
+*   select_query: dict - dict for selection data
+*   days_outdate: int - the number of days after which the file
     is outdated
 
 ## Класс Vacancy
 __Класс Vacancy__ представляет объект для работы с вакансией.
 
-    Atributes:
+Atributes:
 
 *   id:int -  id of the vacancy on the source site,
 *   title:str - job title,
@@ -44,7 +44,8 @@ __Класс Vacancy__ представляет объект для работы
 
 ## Класс HH
 __Класс HH__ создан для работы с сайтом hh.ru.
-    Methods:
+
+Methods:
 
 *   get_request(self, keywords: str = "",
                     area: int = 113,
@@ -57,7 +58,7 @@ __Класс HH__ создан для работы с сайтом hh.ru.
 ## Класс Superjob
 __Класс Superjob__ создан для работы с сайтом superjob.ru.
 
-    Class atribute:
+Class atribute:
 *   superjob_key: str- the key for acsess for superjob
 
 Methods:
