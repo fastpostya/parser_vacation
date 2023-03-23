@@ -3,11 +3,18 @@ import requests
 from utils.no_vac_error import NoVacationError
 from utils.engine_classes import Engine
 from utils.connector import Connector
-# from utils.vacancy import Vacancy, HHVacancy
 
 
 class HH(Engine):
     """Class HH for working with hh.ru.
+    Methods:
+    - get_request(self, keywords: str = "",
+                    area: int = 113,
+                    per_page: int = 100,
+                    page: int = 0,) -> None: The method sends a GET request to the site and returns data
+        in JSON format
+    - get_connector(file_name: str) -> Connector:
+        Returns the instance of class Connector
     """
     # elements = []
 
@@ -69,7 +76,7 @@ class HH(Engine):
  page={page}, count={self.count}")
 
     @staticmethod
-    def get_connector(file_name):
-        """ Возвращает экземпляр класса Connector """
+    def get_connector(file_name: str) -> Connector:
+        """ Returns the instance of class Connector"""
         connector = Connector(file_name)
         return connector

@@ -12,10 +12,9 @@ class Superjob(Engine):
     - superjob_key: str- the key for acsess for superjob
     """
     superjob_key = ""
-    # elements = []
 
     def __init__(self) -> None:
-        """Инициализация объекта класса Superjob"""
+        """Intialisation the instance of class Superjob"""
         self.get_superjob_key()
 
     @classmethod
