@@ -1,0 +1,65 @@
+    {
+        "id": "77236116",
+        "premium": false,
+        "name": "Junior Python Backend Developer",
+        "department": null,
+        "has_test": false,
+        "response_letter_required": false,
+        "area": {
+            "id": "2",
+            "name": "Санкт-Петербург",
+            "url": "https://api.hh.ru/areas/2"
+        },
+        "salary": {
+            "from": null,
+            "to": 60000,
+            "currency": "RUR",
+            "gross": false
+        },
+        "type": {
+            "id": "open",
+            "name": "Открытая"
+        },
+        "address": null,
+        "response_url": null,
+        "sort_point_distance": null,
+        "published_at": "2023-03-22T10:31:27+0300",
+        "created_at": "2023-03-22T10:31:27+0300",
+        "archived": false,
+        "apply_alternate_url": "https://hh.ru/applicant/vacancy_response?vacancyId=77236116",
+        "insider_interview": null,
+        "url": "https://api.hh.ru/vacancies/77236116?host=hh.ru",
+        "adv_response_url": null,
+        "alternate_url": "https://hh.ru/vacancy/77236116",
+        "relations": [],
+        "employer": {
+            "id": "2365329",
+            "name": "АпТрейдер (UpTrader)",
+            "url": "https://api.hh.ru/employers/2365329",
+            "alternate_url": "https://hh.ru/employer/2365329",
+            "logo_urls": {
+                "240": "https://hhcdn.ru/employer-logo/1775063.png",
+                "90": "https://hhcdn.ru/employer-logo/1775062.png",
+                "original": "https://hhcdn.ru/employer-logo-original/333178.png"
+            },
+            "vacancies_url": "https://api.hh.ru/vacancies?employer_id=2365329",
+            "trusted": true
+        },
+        "snippet": {
+            "requirement": "Уверенное знание <highlighttext>python</highlighttext>. Уверенное знание django и DRF. Опыт работы с git. Опыт работы с PostgreSQL и умение писать SQL...",
+            "responsibility": "Поддерживать и дополнять функционал CRM."
+        },
+        "contacts": null,
+        "schedule": null,
+        "working_days": [],
+        "working_time_intervals": [],
+        "working_time_modes": [],
+        "accept_temporary": false,
+        "professional_roles": [
+            {
+                "id": "96",
+                "name": "Программист, разработчик"
+            }
+        ],
+        "accept_incomplete_resumes": false
+    }

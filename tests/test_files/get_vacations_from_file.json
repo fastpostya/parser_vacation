@@ -1,0 +1,304 @@
+[
+    {
+        "id": "77236116",
+        "premium": false,
+        "name": "Junior Python Backend Developer",
+        "department": null,
+        "has_test": false,
+        "response_letter_required": false,
+        "area": {
+            "id": "2",
+            "name": "Санкт-Петербург",
+            "url": "https://api.hh.ru/areas/2"
+        },
+        "salary": {
+            "from": null,
+            "to": 60000,
+            "currency": "RUR",
+            "gross": false
+        },
+        "type": {
+            "id": "open",
+            "name": "Открытая"
+        },
+        "address": null,
+        "response_url": null,
+        "sort_point_distance": null,
+        "published_at": "2023-03-22T10:31:27+0300",
+        "created_at": "2023-03-22T10:31:27+0300",
+        "archived": false,
+        "apply_alternate_url": "https://hh.ru/applicant/vacancy_response?vacancyId=77236116",
+        "insider_interview": null,
+        "url": "https://api.hh.ru/vacancies/77236116?host=hh.ru",
+        "adv_response_url": null,
+        "alternate_url": "https://hh.ru/vacancy/77236116",
+        "relations": [],
+        "employer": {
+            "id": "2365329",
+            "name": "АпТрейдер (UpTrader)",
+            "url": "https://api.hh.ru/employers/2365329",
+            "alternate_url": "https://hh.ru/employer/2365329",
+            "logo_urls": {
+                "240": "https://hhcdn.ru/employer-logo/1775063.png",
+                "90": "https://hhcdn.ru/employer-logo/1775062.png",
+                "original": "https://hhcdn.ru/employer-logo-original/333178.png"
+            },
+            "vacancies_url": "https://api.hh.ru/vacancies?employer_id=2365329",
+            "trusted": true
+        },
+        "snippet": {
+            "requirement": "Уверенное знание <highlighttext>python</highlighttext>. Уверенное знание django и DRF. Опыт работы с git. Опыт работы с PostgreSQL и умение писать SQL...",
+            "responsibility": "Поддерживать и дополнять функционал CRM."
+        },
+        "contacts": null,
+        "schedule": null,
+        "working_days": [],
+        "working_time_intervals": [],
+        "working_time_modes": [],
+        "accept_temporary": false,
+        "professional_roles": [
+            {
+                "id": "96",
+                "name": "Программист, разработчик"
+            }
+        ],
+        "accept_incomplete_resumes": false
+    },
+    {
+        "id": "70705466",
+        "premium": false,
+        "name": "Python-разработчик (Django, DRF)",
+        "department": null,
+        "has_test": false,
+        "response_letter_required": false,
+        "area": {
+            "id": "1",
+            "name": "Москва",
+            "url": "https://api.hh.ru/areas/1"
+        },
+        "salary": {
+            "from": 60000,
+            "to": 220000,
+            "currency": "RUR",
+            "gross": false
+        },
+        "type": {
+            "id": "open",
+            "name": "Открытая"
+        },
+        "address": null,
+        "response_url": null,
+        "sort_point_distance": null,
+        "published_at": "2023-03-22T21:00:14+0300",
+        "created_at": "2023-03-22T21:00:14+0300",
+        "archived": false,
+        "apply_alternate_url": "https://hh.ru/applicant/vacancy_response?vacancyId=70705466",
+        "insider_interview": null,
+        "url": "https://api.hh.ru/vacancies/70705466?host=hh.ru",
+        "adv_response_url": null,
+        "alternate_url": "https://hh.ru/vacancy/70705466",
+        "relations": [],
+        "employer": {
+            "id": "4596113",
+            "name": "Фабрика Решений",
+            "url": "https://api.hh.ru/employers/4596113",
+            "alternate_url": "https://hh.ru/employer/4596113",
+            "logo_urls": {
+                "240": "https://hhcdn.ru/employer-logo/3373013.png",
+                "90": "https://hhcdn.ru/employer-logo/3373012.png",
+                "original": "https://hhcdn.ru/employer-logo-original/732984.png"
+            },
+            "vacancies_url": "https://api.hh.ru/vacancies?employer_id=4596113",
+            "trusted": true
+        },
+        "snippet": {
+            "requirement": "Опыт разработки сложных проектов. Обязателен опыт работы с django 2.*, <highlighttext>python</highlighttext> 3.7, djangorestframework. Знание SQL (в частности, PostgreSQL) и...",
+            "responsibility": "Внимание: с командами не работаем, только с индивидуальными исполнителями. Профессиональный рост и участие в построении архитектур сложных систем."
+        },
+        "contacts": null,
+        "schedule": null,
+        "working_days": [],
+        "working_time_intervals": [],
+        "working_time_modes": [],
+        "accept_temporary": false,
+        "professional_roles": [
+            {
+                "id": "96",
+                "name": "Программист, разработчик"
+            }
+        ],
+        "accept_incomplete_resumes": false
+    },
+    {
+        "id": "77723429",
+        "premium": false,
+        "name": "Python разработчик",
+        "department": null,
+        "has_test": false,
+        "response_letter_required": false,
+        "area": {
+            "id": "41",
+            "name": "Калининград",
+            "url": "https://api.hh.ru/areas/41"
+        },
+        "salary": {
+            "from": 100000,
+            "to": 150000,
+            "currency": "RUR",
+            "gross": false
+        },
+        "type": {
+            "id": "open",
+            "name": "Открытая"
+        },
+        "address": {
+            "city": "Калининград",
+            "street": null,
+            "building": null,
+            "lat": 54.711609,
+            "lng": 20.46453,
+            "description": null,
+            "raw": "Калининград",
+            "metro": null,
+            "metro_stations": [],
+            "id": "12862359"
+        },
+        "response_url": null,
+        "sort_point_distance": null,
+        "published_at": "2023-03-21T14:29:37+0300",
+        "created_at": "2023-03-21T14:29:37+0300",
+        "archived": false,
+        "apply_alternate_url": "https://hh.ru/applicant/vacancy_response?vacancyId=77723429",
+        "insider_interview": null,
+        "url": "https://api.hh.ru/vacancies/77723429?host=hh.ru",
+        "adv_response_url": null,
+        "alternate_url": "https://hh.ru/vacancy/77723429",
+        "relations": [],
+        "employer": {
+            "id": "9450823",
+            "name": "Чабурко Александр Сергеевич",
+            "url": "https://api.hh.ru/employers/9450823",
+            "alternate_url": "https://hh.ru/employer/9450823",
+            "logo_urls": null,
+            "vacancies_url": "https://api.hh.ru/vacancies?employer_id=9450823",
+            "trusted": false
+        },
+        "snippet": {
+            "requirement": "<highlighttext>Python</highlighttext>, MongoDB, Docker Compose, Rest API. Aiogram, Asyncio.",
+            "responsibility": "Написание ТЗ по разработке/доработке скриптов на языке <highlighttext>Python</highlighttext> , дальнейшая разработка по этим же ТЗ. Администрирование Ubuntu Server."
+        },
+        "contacts": null,
+        "schedule": null,
+        "working_days": [],
+        "working_time_intervals": [],
+        "working_time_modes": [],
+        "accept_temporary": false,
+        "professional_roles": [
+            {
+                "id": "96",
+                "name": "Программист, разработчик"
+            }
+        ],
+        "accept_incomplete_resumes": true
+    },
+    {
+        "id": "77502259",
+        "premium": false,
+        "name": "Junior Data scientist (NLP)",
+        "department": null,
+        "has_test": false,
+        "response_letter_required": false,
+        "area": {
+            "id": "1",
+            "name": "Москва",
+            "url": "https://api.hh.ru/areas/1"
+        },
+        "salary": {
+            "from": 100000,
+            "to": 150000,
+            "currency": "RUR",
+            "gross": false
+        },
+        "type": {
+            "id": "open",
+            "name": "Открытая"
+        },
+        "address": {
+            "city": "Москва",
+            "street": "Усачёва улица",
+            "building": "33с1",
+            "lat": 55.723207,
+            "lng": 37.561113,
+            "description": null,
+            "raw": "Москва, Усачёва улица, 33с1",
+            "metro": {
+                "station_name": "Лужники",
+                "line_name": "МЦК",
+                "station_id": "95.535",
+                "line_id": "95",
+                "lat": 55.720278,
+                "lng": 37.563056
+            },
+            "metro_stations": [
+                {
+                    "station_name": "Лужники",
+                    "line_name": "МЦК",
+                    "station_id": "95.535",
+                    "line_id": "95",
+                    "lat": 55.720278,
+                    "lng": 37.563056
+                },
+                {
+                    "station_name": "Спортивная",
+                    "line_name": "Сокольническая",
+                    "station_id": "1.135",
+                    "line_id": "1",
+                    "lat": 55.722388,
+                    "lng": 37.562041
+                }
+            ],
+            "id": "1651801"
+        },
+        "response_url": null,
+        "sort_point_distance": null,
+        "published_at": "2023-03-21T18:26:35+0300",
+        "created_at": "2023-03-21T18:26:35+0300",
+        "archived": false,
+        "apply_alternate_url": "https://hh.ru/applicant/vacancy_response?vacancyId=77502259",
+        "insider_interview": null,
+        "url": "https://api.hh.ru/vacancies/77502259?host=hh.ru",
+        "adv_response_url": null,
+        "alternate_url": "https://hh.ru/vacancy/77502259",
+        "relations": [],
+        "employer": {
+            "id": "3536900",
+            "name": "Платформа ОФД",
+            "url": "https://api.hh.ru/employers/3536900",
+            "alternate_url": "https://hh.ru/employer/3536900",
+            "logo_urls": {
+                "240": "https://hhcdn.ru/employer-logo/2657470.jpeg",
+                "90": "https://hhcdn.ru/employer-logo/2657469.jpeg",
+                "original": "https://hhcdn.ru/employer-logo-original/553999.jpg"
+            },
+            "vacancies_url": "https://api.hh.ru/vacancies?employer_id=3536900",
+            "trusted": true
+        },
+        "snippet": {
+            "requirement": "Знание <highlighttext>python</highlighttext> и части DS стека. Умение писать красивый код. Хорошее знание математики и машинного обучения. Опыт работы от года. ",
+            "responsibility": "Классические задачи: классификация/тематическое моделирование, NER, NEL, semi supervised learning, задачи поиска. Все не так просто, так как объемы большие..."
+        },
+        "contacts": null,
+        "schedule": null,
+        "working_days": [],
+        "working_time_intervals": [],
+        "working_time_modes": [],
+        "accept_temporary": false,
+        "professional_roles": [
+            {
+                "id": "96",
+                "name": "Программист, разработчик"
+            }
+        ],
+        "accept_incomplete_resumes": false
+    }
+]

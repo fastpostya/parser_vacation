@@ -7,29 +7,28 @@ from utils.connector import Connector
 
 
 class HH(Engine):
-    """Класс HH для работы с сайтом hh.ru.
+    """Class HH for working with hh.ru.
     """
-    elements = []
+    # elements = []
 
     def __init__(self) -> None:
         """Инициализация объекта класса HH"""
         pass
 
     def get_request(self, keywords: str = "",
-                    area: int =113,
+                    area: int = 113,
                     per_page: int = 100,
                     page: int = 0,) -> None:
-        """Метод отправляет GET- запрос к сайту и возвращает данные
-        в формате JSON.
-        Атрибуты:
-        - keywords: str - ключевое слово для поиска вакансии
-        - area: str|i-название города для поиска или его ID
-            (113 - регион Россия, 1 - Москва, 1202 -Новосибирск)
-        - page: int -Номер страницы результата поиска
-        - per_page: int - Количество результатов на страницу поиска.
+        """The method sends a GET request to the site and returns data
+        in JSON format.
+        Attributes:
+        - keywords: str - keyword for job search
+        - area: str|i-the name of the city to search for or its ID
+        (113 - region Russia, 1 - Moscow, 1202 -Novosibirsk)
+        - page: int - page number of the search result
+        - per_page: int - number of results per search page.
         """
         self.keywords = keywords
-        # self.town = town
         self.count = per_page
         self.page = page
         self.area = area
@@ -38,11 +37,10 @@ class HH(Engine):
         for i in range(5):
             self.page = i
 
-            # здесь передаются параметры запроса
+            # getting query params
             params = {'per_page': self.count,
                         'text': self.keywords,
-                        'per_page': self.count,
-                        'page':self.page,
+                        'page': self.page,
                         'User-Agent': 'MyApp/1.0 (something@useful.com)',
                         'area': self.area}
 
@@ -66,16 +64,12 @@ class HH(Engine):
             input("Для продолжения нажмите любую клавишу.")
             return list_vacations
         else:
-            raise NoVacationError(f"Вакансий с заданными параметрами не найдено:\n\
-keywords={keywords}, town={town}, page={page}, count={count}")
+            raise NoVacationError(f"Вакансий с заданными параметрами не\
+ найдено:\nkeywords={keywords}, area={self.area},\
+ page={page}, count={self.count}")
 
     @staticmethod
     def get_connector(file_name):
         """ Возвращает экземпляр класса Connector """
         connector = Connector(file_name)
         return connector
-
-    # def print_info(self) -> None:
-    #     """Печатает атрибут elements HHVacancy"""
-    #     for i in self.elements:
-    #         print(i)

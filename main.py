@@ -1,7 +1,6 @@
-import json
 from json import JSONDecodeError
 import click
-from config import super_job_key, keyword, file_path
+from config import keyword, file_path
 from utils.superjob import Superjob
 from utils.hh import HH
 from utils.no_vac_error import NoVacationError
@@ -20,7 +19,7 @@ def get_from_sj(file_path: str):
     print("Делаем запрос на сайт Superjob")
     clear = input("Очистить файл?\nПодтвердите очистку - y")
 
-     # Создаем экземпляр класса Superjob для поиска вакансий на сайте superjob
+    # Создаем экземпляр класса Superjob для поиска вакансий на сайте superjob
     superjob = Superjob()
     try:
         answer = superjob.get_request(keyword)  # , "Магадан")
@@ -56,7 +55,7 @@ def get_from_hh(file_path: str):
     # Создаем экземпляр класса HHVacancy
     hh = HH()
     try:
-        answer = hh.get_request(keyword) #, "1202")
+        answer = hh.get_request(keyword)
     except ConnectionError as error:
         print(error)
         input("Для продолжения нажмите любую клавишу.")

@@ -158,28 +158,6 @@ class Connector:
             self.text = json.dumps(list_save, ensure_ascii=False)
         return self.text
 
-    # def get_json_from_file(self) -> dict:
-    #     """Getting json from param text, that was getted from file
-    #     """
-    #     list_save = []
-    #     if self.text != "":
-    #         # not empty file
-    #         date_from_file = json.loads(self.text)
-    #         if isinstance(date_from_file, dict):
-    #             # there is one element in file
-    #             list_save.append(date_from_file)
-    #         elif isinstance(date_from_file, list):
-    #             # there are many elements in file
-    #             for file_elements in date_from_file:
-    #                 list_save.append(file_elements)
-    #     if len(list_save) == 1:
-    #         self.save_date(list_save[0])
-    #         self.text = json.dumps(list_save[0], ensure_ascii=False)
-    #     else:
-    #         self.save_date(list_save)
-    #         self.text = json.dumps(list_save, ensure_ascii=False)
-    #     return self.text
-
     def select(self, query: dict) -> list | KeyError:
         """
         Selecting dates from file.
@@ -305,9 +283,9 @@ def try_delete():
 
     print(connector_del.text)
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # try_insert()
-    try_select()
+    # try_select()
     # try_delete()
 
 
