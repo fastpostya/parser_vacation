@@ -7,24 +7,25 @@ from utils.no_vac_error import NoVacationError
 class Test_job_classes(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.dict = [Vacancy("01", "первая", 0, 0, 100),
-                    Vacancy("02", "вторая", 0, 0, 50),
-                    Vacancy("03", "третья", 0, 0, 150),
-                    Vacancy("04", "четвертая", 0, 0, 75)
-        ]
+        self.dict = [
+            Vacancy("01", "первая", 0, 0, 100),
+            Vacancy("02", "вторая", 0, 0, 50),
+            Vacancy("03", "третья", 0, 0, 150),
+            Vacancy("04", "четвертая", 0, 0, 75)
+            ]
 
         self.dict_11 = [Vacancy("01", "первая", 0, 0, 100),
-                    Vacancy("02", "вторая", 0, 0, 50),
-                    Vacancy("03", "третья", 0, 0, 150),
-                    Vacancy("04", "четвертая", 0, 0, 75),
-                    Vacancy("05", "пятая", 0, 0, 874),
-                    Vacancy("06", "шестая", 0, 0, 365),
-                    Vacancy("07", "седьмая", 0, 0, 250),
-                    Vacancy("08", "восьмая", 0, 0, 750),
-                    Vacancy("09", "девятая", 0, 0, 35),
-                    Vacancy("10", "десятая", 0, 0, 1500),
-                    Vacancy("11", "одиннадцатая", 0, 0, 250)
-        ]
+                        Vacancy("02", "вторая", 0, 0, 50),
+                        Vacancy("03", "третья", 0, 0, 150),
+                        Vacancy("04", "четвертая", 0, 0, 75),
+                        Vacancy("05", "пятая", 0, 0, 874),
+                        Vacancy("06", "шестая", 0, 0, 365),
+                        Vacancy("07", "седьмая", 0, 0, 250),
+                        Vacancy("08", "восьмая", 0, 0, 750),
+                        Vacancy("09", "девятая", 0, 0, 35),
+                        Vacancy("10", "десятая", 0, 0, 1500),
+                        Vacancy("11", "одиннадцатая", 0, 0, 250)
+                        ]
         self.empty_dict = []
 
     def test_sorting_empty(self) -> list | NoVacationError:

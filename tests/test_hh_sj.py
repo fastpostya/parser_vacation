@@ -20,10 +20,11 @@ class Test_HH_SJ(unittest.TestCase):
         self.assertNotEqual(len(list_vacation), 0)
 
     def test_hh_no_find(self) -> None:
-        """ testing class HH. Vacancy ded not find."""
+        """ Testing class HH. Vacancy did not find."""
         hh = HH()
         with self.assertRaises(NoVacationError):
-            hh.get_request("Java", "smth", -1, 2)
+            text = hh.get_request("Java", "smth", -1, 2)
+            print(text)
         connector = hh.get_connector(self.path)
         self.assertEqual(connector.text, '{"key1":"value1"}')
 
@@ -34,7 +35,7 @@ class Test_HH_SJ(unittest.TestCase):
         self.assertNotEqual(len(list_vacation), 0)
 
     def test_sj_no_find(self) -> None:
-        """ testing class Superjob. Vacancy ded not find."""
+        """ Testing class Superjob. Vacancy did not find."""
         sj = Superjob()
         with self.assertRaises(NoVacationError):
             sj.get_request("суперкрутой", "Тверь", 1, 2)

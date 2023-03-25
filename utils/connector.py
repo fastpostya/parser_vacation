@@ -48,7 +48,8 @@ class Connector:
 
     @data_file.setter
     def data_file(self, path: str) -> str:
-        # код для установки файла
+
+        # setting data_file - path
         self.__data_file = path
         return self.__data_file
 
@@ -74,20 +75,18 @@ class Connector:
 
     def is_file_not_old(self, path: str) -> bool | TimeoutError:
         """ Cheking file creating date and time. If the file was
-        creating more then <days> ago raises TimeoutError,
+        creating more then <days_outdate> ago raises TimeoutError,
         in other case returns True.
         """
-        # path = self.data_file
         # the number of days after which the file is outdated
         days = self.days_outdate
-        file_time = os.path.getmtime(path)
-        file_time = datetime.datetime.fromtimestamp(file_time)
+        file_time_ = os.path.getmtime(path)
+        file_time = datetime.datetime.fromtimestamp(file_time_)
         time_now = datetime.datetime.now()
         time_delta = time_now - file_time
         if time_delta > datetime.timedelta(days=days):
             raise TimeoutError("Файл с данными устарел.\
  Пожалуйста, обновите его!")
-        # self.__is_file_not_old = True
         return True
 
     @staticmethod
@@ -100,7 +99,7 @@ class Connector:
         text_json = json.loads(text)
         return True
 
-    def save_date(self, data: dict | list) -> None:
+    def save_date(self, data: dict | list | None) -> dict | list | None:
         """Saving data in file data_file"""
         with open(self.data_file, "w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False)
@@ -111,8 +110,6 @@ class Connector:
         Cheking if file <path> exist, cheking file creating date and time.
         If file doesn't exist - it will be created.
         """
-        # if self.is_file_exist(self.data_file):
-        #  and self.is_file_not_old:
         self.text = self.read_file()
         return self.text
 
@@ -146,6 +143,76 @@ class Connector:
                 # there are many elements in new_data
                 for element in new_data:
                     list_save.append(element)
+            else:
+                raise KeyError("Некорректные данные")
+        else:
+            raise KeyError("Некорректные данные")
+        if len(list_save) == 1:
+            self.save_date(list_save[0])
+            self.text = json.dumps(list_save[0], ensure_ascii=False)
+        else:
+            self.save_date(list_save)
+            self.text = json.dumps(list_save, ensure_ascii=False)
+        return self.text
+
+    @staticmethod
+    def id_is_in_data(data: dict | list, id: str) -> bool:
+        """ returns True if key 'id' not in data
+        or value of key id not in data"""
+        if isinstance(data, dict):
+            return ("id" in data) and (data["id"] == id)
+        if isinstance(data, list):
+            for one_dict in data:
+                if ("id" in one_dict) and (one_dict["id"] == id):
+                    return True
+        return False
+
+    def insert_only_unic(self, data: dict | list) -> str:
+        """
+        Method inserts date in file with saving it's structure.
+        It checks if id is not in file.
+        In case empty or wrong date raises KeyError.
+        Returns text - date with insertion.
+
+        Atribute:
+        :param data: dict | list - data in JSON format.
+        """
+        # open file and read date from file
+        # file was checked while initialisation
+        self.read_file()
+        list_save = []
+
+        if self.text != "":
+            # not empty file
+            date_from_file = json.loads(self.text)
+            if isinstance(date_from_file, dict):
+                # there is one element in file
+                list_save.append(date_from_file)
+            elif isinstance(date_from_file, list):
+                # there are many elements in file
+                for element in date_from_file:
+                    if ("id" in element) and not self.id_is_in_data(
+                            list_save, element["id"]):
+                        list_save.append(element)
+                    else:
+                        list_save.append(element)
+        if data:
+            new_data = data
+            if isinstance(new_data, dict):
+                # file is not empty, new_date is one element
+                if not ("id" in new_data):
+                    list_save.append(new_data)
+                elif not self.id_is_in_data(list_save, new_data["id"]):
+                    list_save.append(new_data)
+            elif isinstance(new_data, list):
+                # file is not empty, there are many elements in new_data
+                for element in new_data:
+                    if ("id" in element):
+                        if not self.id_is_in_data(
+                            list_save, element["id"]):
+                            list_save.append(element)
+                    else:
+                        list_save.append(element)
             else:
                 raise KeyError("Некорректные данные")
         else:
@@ -208,8 +275,8 @@ class Connector:
                 first_key = list(query.keys())[0]
                 first_value = query[first_key]
                 for element in date:
-                    if not (first_key in element and first_value ==\
-                            element[first_key]):
+                    if not (first_key in element and
+                            first_value == element[first_key]):
                         new_list.append(element)
                 self.save_date(new_list)
                 self.text = json.dumps(new_list, ensure_ascii=False)
@@ -218,86 +285,3 @@ class Connector:
                 raise (KeyError("Неправильный формат словаря для отбора данных"))
         else:
             raise (KeyError("Неправильный формат JSON-файла"))
-
-
-def del_file(path):
-    file = open(path, "w", encoding="UTF-8")
-    file.write('')
-    file.close()
-
-
-def try_insert():
-    path_insert = os.sep.join(["tests", "test_files", "test_insert.json"])
-    # clear file
-    del_file(path_insert)
-    # ----INSERT----
-    connector_insert = Connector(path_insert)
-    connector_insert.insert({"key4": "value4"})
-    print(connector_insert.text)
-    connector_insert.insert({"key5": "value5"})
-    print(connector_insert.text)
-    try:
-        connector_insert.insert([{"key6": "value6"}, {"text1": "1235"}])
-        print(connector_insert.text)
-    except:
-        print('ERROR: [{"key6": "value6"}, {"text1": "1235"}]')
-    try:
-        connector_insert.insert([{"key6": "value6", "text2": "4587"}])
-        print(connector_insert.text)
-    except:
-        print('ERROR: [{"key6": "value6", "text2": "4587"}]')
-    try:
-        connector_insert.insert([{"key6": "value6", "tex32": "2587"}])
-        print(connector_insert.text)
-    except:
-        print('ERROR: [{"key6": "value6", "tex32": "2587"}]')
-    # # # try:
-    # connector_insert.insert('')
-    # print(connector_insert.text)
-    # except:
-    #     pass
-    # connector_insert.insert('{"key": "value2"}')
-    # connector_insert.insert('[{"key": "value3"}, {"key": "value4"}]')
-    # connector_insert.insert('{"key": "value5"}')
-    # pprint.pprint(connector_insert.text)
-
-
-def try_select():
-    # ---SELECT---
-    path_select = os.sep.join(["tests", "test_files", "test_select.json"])
-    connector_select = Connector(path_select)
-    connector_select.select({"key6": "value6"})
-    print(connector_select.list_select)
-
-
-def try_delete():
-    path_delete = os.sep.join(["tests", "test_files", "test_delete.json"])
-    del_file(path_delete)
-    connector_del = Connector(path_delete)
-    connector_del.insert([{"key4": "value4"}, {"key5": "value5"}, {"key6": "value6"}, {"text1": "1235"}, {"key6": "value6", "text2": "4587"}])
-    connector_del.delete({"text1": "1235"})
-    connector_del.delete({"key5": "value5"})
-    connector_del.delete({"key4": "value4"})
-    connector_del.delete({"key6": "value6"})
-    connector_del.insert([{"key4": "value4"}, {"key5": "value5"}, {"key6": "value6"}, {"text1": "1235"}, {"key6": "value6", "text2": "4587"}])
-
-    print(connector_del.text)
-
-# if __name__ == '__main__':
-    # try_insert()
-    # try_select()
-    # try_delete()
-
-
-    # try:
-        # df = Connector(os.sep.join(["vacations.json"]))
-    #     path = os.sep.join(["tests", "test_files", "new.json"])
-    #     file = open(path, "w", encoding="UTF-8")
-    #     file.write('[{"key1": "value1"}, {"key2": "value2"}]')
-    #     file.close()
-    #     df = Connector(path)
-    #     print(df.text)
-    # except JSONDecodeError:
-    #     print("Неверный формат JSON")
-    # except TimeoutError:
-    #     print("Файл устарел")

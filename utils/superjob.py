@@ -18,15 +18,16 @@ class Superjob(Engine):
         self.get_superjob_key()
 
     @classmethod
-    def get_superjob_key(cls) -> None:
+    def get_superjob_key(cls) -> str:
         """The classmethod writes to a variable of the superjob_key class
     the value of the key for accessing the superjob.ru site from
     the super_job_key variable, which is located in the file config.py
         """
         cls.superjob_key = super_job_key
+        return cls.superjob_key
 
     def get_request(self, keywords: str = "", town: str = "",
-                    page: int = 0, count: int = 100) -> None:
+                    page: int = 0, count: int = 100) -> list:
         """The method sends a GET request to the site and returns data
         in JSON format.
 
@@ -48,13 +49,17 @@ class Superjob(Engine):
         for i in range(5):
             self.page = i
             # query parameters
-            params = {"keywords": self.keywords,
-                        "town": self.town,
-                        "page": self.page,
-                        "count": self.count}
-            response = requests.get('https://api.superjob.ru/2.0/vacancies/',
-                                    headers=my_auth_data,
-                                    params=params)
+            params = {
+                "keywords": self.keywords,
+                "town": self.town,
+                "page": self.page,
+                "count": self.count
+                }
+            response = requests.get(
+                'https://api.superjob.ru/2.0/vacancies/',
+                headers=my_auth_data,
+                params=params
+                )
 
             if response.status_code:
                 is_response_successful = True
@@ -65,14 +70,11 @@ class Superjob(Engine):
         if not is_response_successful:
             raise ConnectionError(response, response.text)
         if len(list_vacations):
-            # print(f"Получено {len(list_vacations)} вакансий")
-            # input("Для продолжения нажмите любую клавишу.")
             return list_vacations
         else:
             raise NoVacationError(f"Вакансий с заданными\
  параметрами не найдено:\n\
 keywords={keywords}, town={town}, page={page}, count={count}")
-
 
     @staticmethod
     def get_connector(file_name: str) -> Connector:

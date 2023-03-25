@@ -24,7 +24,7 @@ class HH(Engine):
     def get_request(self, keywords: str = "",
                     area: int = 113,
                     page: int = 0,
-                    per_page: int = 100) -> None:
+                    per_page: int = 100) -> list:
         """The method sends a GET request to the site and returns data
         in JSON format.
         Attributes:
@@ -44,11 +44,13 @@ class HH(Engine):
             self.page = i
 
             # getting query params
-            params = {'per_page': self.count,
-                        'text': self.keywords,
-                        'page': self.page,
-                        'User-Agent': 'MyApp/1.0 (something@useful.com)',
-                        'area': self.area}
+            params = {
+                'per_page': self.count,
+                'text': self.keywords,
+                'page': self.page,
+                'User-Agent': 'MyApp/1.0 (something@useful.com)',
+                'area': self.area
+                }
 
             url = "https://api.hh.ru/vacancies"
             response = requests.get(url, params=params)
@@ -66,10 +68,9 @@ class HH(Engine):
             if not is_response_successful:
                 raise ConnectionError(response, response.text)
         if len(list_vacations):
-            # print(f"Получено {len(list_vacations)} вакансий")
-            # input("Для продолжения нажмите любую клавишу.")
             return list_vacations
         else:
+            print("!!!!!!!!!!!!!!!!")
             raise NoVacationError(f"Вакансий с заданными параметрами не\
  найдено:\nkeywords={keywords}, area={self.area},\
  page={page}, count={self.count}")

@@ -1,5 +1,6 @@
 useful_but_not_used/
-
+.mypy_cache/
+mypy.ini
 __pycache__
 venv/
 .vscode/

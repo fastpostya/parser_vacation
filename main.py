@@ -1,4 +1,5 @@
 from json import JSONDecodeError
+import json
 import click
 from config import keyword, file_path
 from utils.superjob import Superjob
@@ -19,10 +20,10 @@ def get_from_sj(file_path: str):
     print("Делаем запрос на сайт Superjob")
     clear = input("Очистить файл?\nДля подтверждения нажмите клавишу 'y' ")
 
-    # Создаем экземпляр класса Superjob для поиска вакансий на сайте superjob
+    # create the instance of class Superjob for searching in superjob.ru
     superjob = Superjob()
     try:
-        answer = superjob.get_request(keyword)  # , "Магадан")
+        answer = superjob.get_request(keyword)
         if len(answer):
             print(f"Получено {len(answer)} вакансий")
             input("Для продолжения нажмите любую клавишу.")
@@ -40,7 +41,8 @@ def get_from_sj(file_path: str):
         connector.save_date(None)
 
     try:
-        connector.insert(answer)
+        # connector.insert(answer)
+        connector.insert_only_unic(answer)
     except KeyError as error:
         print(error)
         input("Для продолжения нажмите любую клавишу.")
@@ -55,7 +57,8 @@ def get_from_hh(file_path: str):
     """Get request from hh.ru and insert date in file 'file_path'"""
     print("Делаем запрос на сайт hh.ru")
     clear = input("Очистить файл?\nДля подтверждения нажмите клавишу 'y' ")
-    # Создаем экземпляр класса HHVacancy
+
+    # create the instance of class HHVacancy
     hh = HH()
     try:
         answer = hh.get_request(keyword)
@@ -74,7 +77,8 @@ def get_from_hh(file_path: str):
     if clear == "y":
         connector_hh.save_date(None)
     try:
-        connector_hh.insert(answer)
+        # connector_hh.insert(answer)
+        connector_hh.insert_only_unic(answer)
     except KeyError as error:
         print(error)
         input("Для продолжения нажмите любую клавишу.")
@@ -114,13 +118,16 @@ def get_data_from_file(file_path: str):
         return
     clrscr()
     print("Выберите нужное действие:")
-    print("1 - Напечатать вакансии")
-    print("2 - Отсортировать вакансии по зарплате.")
-    print("3 - Вывести 10 вакансий с наивысшей оплатой.")
+    print("1 - Напечатать количество вакансий в файле")
+    print("2 - Напечатать вакансии")
+    print("3 - Отсортировать вакансии по зарплате.")
+    print("4 - Вывести 10 вакансий с наивысшей оплатой.")
     result = input()
 
     match result:
         case ("1"):
+            get_count_of_vacancy(file_path)
+        case ("2"):
             if len(list_vacancies):
                 print("Вакансий в файле:", len(list_vacancies))
                 for i in list_vacancies:
@@ -128,7 +135,7 @@ def get_data_from_file(file_path: str):
             else:
                 print("Вакансий в файле не найдено. Создайте новый запрос.")
             input("Для продолжения нажмите любую клавишу.")
-        case ("2"):
+        case ("3"):
             try:
                 sorted_list = sorting(list_vacancies)
                 for i in sorted_list:
@@ -136,7 +143,7 @@ def get_data_from_file(file_path: str):
             except NoVacationError as error:
                 print(error)
             input("Для продолжения нажмите любую клавишу.")
-        case ("3"):
+        case ("4"):
             try:
                 top_vacancies = get_top(list_vacancies, 10)
                 for i in top_vacancies:
@@ -144,6 +151,24 @@ def get_data_from_file(file_path: str):
             except NoVacationError as error:
                 print(error)
             input("Для продолжения нажмите любую клавишу.")
+
+
+def get_count_of_vacancy(file_path: str) -> int:
+    """ Getting count of vacancies if file <file_path>"""
+
+    try:
+        list_vacancies = get_vacations_from_file(file_path)
+        number_vacancies = list_vacancies
+        print(f"Вакансий в файле: {len(number_vacancies)}")
+        input("Для продолжения нажмите любую клавишу.")
+        return number_vacancies
+    except KeyError as error:
+        print(error)
+        input("Для продолжения нажмите любую клавишу.")
+
+    except JSONDecodeError as error:
+        print(error)
+        input("Для продолжения нажмите любую клавишу.")
 
 
 def main():
