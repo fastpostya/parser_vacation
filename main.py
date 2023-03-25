@@ -1,5 +1,4 @@
 from json import JSONDecodeError
-import json
 import click
 from config import keyword, file_path
 from utils.superjob import Superjob

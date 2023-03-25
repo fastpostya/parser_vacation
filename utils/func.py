@@ -1,5 +1,4 @@
 import json
-from json import JSONDecodeError
 from utils.connector import Connector
 from utils.vacancy import Vacancy
 
@@ -47,27 +46,32 @@ def get_vacations_from_file(file_path: str):
                 if "name" in vacancy:
                     title = vacancy["name"]
                     service = "HH"
-                    if vacancy["salary"] and ("salary" in vacancy) and ("from" in vacancy["salary"])\
-                                and vacancy["salary"]["from"]:
+                    if vacancy["salary"] and ("salary" in vacancy) and\
+                        ("from" in vacancy["salary"])\
+                        and vacancy["salary"]["from"]:
                         salary_from = float(vacancy["salary"]["from"])
-                    if vacancy["salary"] and ("salary" in vacancy) and ("to" in vacancy["salary"])\
-                                and vacancy["salary"]["to"]:
+                    if vacancy["salary"] and ("salary" in vacancy) and\
+                        ("to" in vacancy["salary"])\
+                        and vacancy["salary"]["to"]:
                         salary_to = float(vacancy["salary"]["to"])
-                    if vacancy["salary"] and ("salary" in vacancy) and ("currency" in vacancy["salary"]):
+                    if vacancy["salary"] and ("salary" in vacancy) and\
+                        ("currency" in vacancy["salary"]):
                         currency = vacancy["salary"]["currency"]
                     if "requirement" in vacancy:
                         description = vacancy["requirement"]
                     if "url" in vacancy:
                         url = vacancy["url"]
-                    if ("employer" in vacancy) and ("name" in vacancy["employer"])\
-                            and vacancy["employer"]["name"]:
+                    if ("employer" in vacancy) and\
+                        ("name" in vacancy["employer"])\
+                        and vacancy["employer"]["name"]:
                         firm_name = vacancy["employer"]["name"]
-                if salary_to != 0.0 :
+                if salary_to != 0.0:
                     salary = salary_to
                 else:
                     salary = salary_from
-                new_vacancy = Vacancy(id, title, salary_from, salary_to,
-                                        salary, url, description, currency,
-                                        firm_name, service)
+                new_vacancy = Vacancy(
+                    id, title, salary_from, salary_to,
+                    salary, url, description, currency,
+                    firm_name, service)
                 list_vacancies.append(new_vacancy)
     return list_vacancies
