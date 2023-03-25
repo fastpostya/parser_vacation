@@ -43,11 +43,11 @@ class Superjob(Engine):
         self.count = count
         list_vacations = []
         is_response_successful = False
-        # здесь передается ключ доступа
+        # the key for acess to the superjob.ru
         my_auth_data = {'X-Api-App-Id': self.superjob_key}
         for i in range(5):
             self.page = i
-            # здесь передаются параметры запроса
+            # query parameters
             params = {"keywords": self.keywords,
                         "town": self.town,
                         "page": self.page,
@@ -65,8 +65,8 @@ class Superjob(Engine):
         if not is_response_successful:
             raise ConnectionError(response, response.text)
         if len(list_vacations):
-            print(f"Добавлено {len(list_vacations)} вакансий")
-            input("Для продолжения нажмите любую клавишу.")
+            # print(f"Получено {len(list_vacations)} вакансий")
+            # input("Для продолжения нажмите любую клавишу.")
             return list_vacations
         else:
             raise NoVacationError(f"Вакансий с заданными\

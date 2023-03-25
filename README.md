@@ -73,12 +73,19 @@ Methods:
         The method sends a GET request to the site and returns data
         in JSON format.
 
+## Класс NoVacationError
+__Класс NoVacationError__ создан для обработки исключения, которое выбрасывается в случае, если при запросе к сайту с вакансиями ни одно не найдено.
+
+
+
 ## Функции
 *   sorting(vacancies: list) -> list: сортирует список объектов Vacancy по зарплате
 *   get_top(vacancies: list, top_count: int) -> list: возвращает топ-10 вакансий с самой высокой зарплатой
 *   get_vacations_from_file(file_path: str): возвращает список вакансий из файла
 
 ## Работа с программой
+
+Ключевое слово (keyword) и путь к файлу (file_path) с данными для поиска вакансии задаются в файле config.py.
 При запуске появляется меню
 
     ------Парсер вакансий------

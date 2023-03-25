@@ -100,6 +100,11 @@ class Test_Connector(unittest.TestCase):
     def test_insert(self) -> None:
         """testing inserting in empty file and not empty"""
         self.connector_insert = Connector(self.path_empty_insert)
+
+        # wrong data not list, not dict
+        with self.assertRaises(KeyError):
+            self.connector_insert.insert("key")
+
         # first insert
         self.connector_insert.insert({"key": "value"})
         with open(self.path_empty_insert, "r", encoding="utf-8") as file:
@@ -156,6 +161,11 @@ class Test_Connector(unittest.TestCase):
                                     {"key6": "value6", "text2": "4587"},
                                     {"key6": "value6", "tex32": "2587"}
         ])
+
+        # wrong data not list, not dict
+        with self.assertRaises(KeyError):
+            self.connector_select.select("key")
+
         text_select = self.connector_select.select({"key6": "value6"})
         self.assertEqual(text_select,
             [
@@ -167,6 +177,11 @@ class Test_Connector(unittest.TestCase):
     def test_delete(self) -> None:
         """testin deleting file by query"""
         self.connector_del = Connector(self.path_del)
+
+        #deleting from empty file
+        with self.assertRaises(KeyError):
+            self.connector_del.delete({"key5": "value5"})
+
         self.connector_del.insert([{"key4": "value4", "key6": "value6"},
                                 {"key5": "value5"},
                                 {"key5": "value6", "text1": "1235"},

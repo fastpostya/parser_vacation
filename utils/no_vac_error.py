@@ -1,12 +1,13 @@
 class NoVacationError(Exception):
-    """Класс NoVacationError для обработки исключения, возникающего
-    в случае, если в запросе к сайту с вакансиями не вернется ни одной.
-    Атрибуты:
-    -message:str - сообщение об ошибке
+    """The NoVacationError class is used to handle an exception that occurs
+    if no vacancies are returned in a request to a site with vacancies.
 
-    Методы:
-    -__init__-инициализация класса
-    -__str__- возвращает строку для печати с сообщением об ошибке
+    Attributes:
+    -message:str - error message
+
+    Methods:
+    -__init__ - initializing an instance of an object of class NoVacationError
+    -__str__- returns a text to print with an error message
     """
     def __init__(self, message=""):
         if message:
@@ -15,6 +16,5 @@ class NoVacationError(Exception):
             self.message = None
 
     def __str__(self):
-        """возвращает тип ошибки и сообщение"""
+        """ returns the type of error and the message"""
         return "NoVacationError: " + str(self.message)
-      

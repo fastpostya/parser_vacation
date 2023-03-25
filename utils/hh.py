@@ -10,13 +10,12 @@ class HH(Engine):
     Methods:
     - get_request(self, keywords: str = "",
                     area: int = 113,
-                    per_page: int = 100,
-                    page: int = 0,) -> None: The method sends a GET request to the site and returns data
-        in JSON format
+                    page: int = 0,
+                    per_page: int = 100) -> None: The method sends
+    a GET request to the site and returns data in JSON format
     - get_connector(file_name: str) -> Connector:
         Returns the instance of class Connector
     """
-    # elements = []
 
     def __init__(self) -> None:
         """Инициализация объекта класса HH"""
@@ -24,8 +23,8 @@ class HH(Engine):
 
     def get_request(self, keywords: str = "",
                     area: int = 113,
-                    per_page: int = 100,
-                    page: int = 0,) -> None:
+                    page: int = 0,
+                    per_page: int = 100) -> None:
         """The method sends a GET request to the site and returns data
         in JSON format.
         Attributes:
@@ -67,8 +66,8 @@ class HH(Engine):
             if not is_response_successful:
                 raise ConnectionError(response, response.text)
         if len(list_vacations):
-            print(f"Добавлено {len(list_vacations)} вакансий")
-            input("Для продолжения нажмите любую клавишу.")
+            # print(f"Получено {len(list_vacations)} вакансий")
+            # input("Для продолжения нажмите любую клавишу.")
             return list_vacations
         else:
             raise NoVacationError(f"Вакансий с заданными параметрами не\

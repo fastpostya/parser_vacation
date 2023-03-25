@@ -17,12 +17,15 @@ def clrscr():
 def get_from_sj(file_path: str):
     """Get request from superjob.ru and insert date in file 'file_path'"""
     print("Делаем запрос на сайт Superjob")
-    clear = input("Очистить файл?\nПодтвердите очистку - y")
+    clear = input("Очистить файл?\nДля подтверждения нажмите клавишу 'y' ")
 
     # Создаем экземпляр класса Superjob для поиска вакансий на сайте superjob
     superjob = Superjob()
     try:
         answer = superjob.get_request(keyword)  # , "Магадан")
+        if len(answer):
+            print(f"Получено {len(answer)} вакансий")
+            input("Для продолжения нажмите любую клавишу.")
     except ConnectionError as error:
         print(error)
         input("Для продолжения нажмите любую клавишу.")
@@ -51,11 +54,14 @@ def get_from_sj(file_path: str):
 def get_from_hh(file_path: str):
     """Get request from hh.ru and insert date in file 'file_path'"""
     print("Делаем запрос на сайт hh.ru")
-    clear = input("Очистить файл?\nПодтвердите очистку - y")
+    clear = input("Очистить файл?\nДля подтверждения нажмите клавишу 'y' ")
     # Создаем экземпляр класса HHVacancy
     hh = HH()
     try:
         answer = hh.get_request(keyword)
+        if len(answer):
+            print(f"Получено {len(answer)} вакансий")
+            input("Для продолжения нажмите любую клавишу.")
     except ConnectionError as error:
         print(error)
         input("Для продолжения нажмите любую клавишу.")
@@ -103,7 +109,7 @@ def get_data_from_file(file_path: str):
     try:
         list_vacancies = get_vacations_from_file(file_path)
     except JSONDecodeError:
-        print("Неправильный формат данных в файле. Пожалуйста, сделайте новый запрос.")
+        print("Неправильный формат данных в файле. Рекомендуется сделать новый запрос.")
         input("Для продолжения нажмите любую клавишу.")
         return
     clrscr()

@@ -18,7 +18,7 @@ class Test_func(unittest.TestCase):
     def test_get_vacations_from_file(self) -> list:
         # connector = Connector(self.path)
         new_list = get_vacations_from_file(self.path)
-        self.assertEqual(len(new_list), 4)
+        self.assertEqual(len(new_list), 5)
         self.assertIsInstance(new_list, list)
         new_list_one = get_vacations_from_file(self.path_one)
         self.assertEqual(new_list_one[0].title, "Junior Python Backend Developer")
