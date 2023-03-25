@@ -1,5 +1,4 @@
 from json import JSONDecodeError
-import json
 import click
 from config import keyword, file_path
 from utils.superjob import Superjob
@@ -92,11 +91,16 @@ def get_from_hh(file_path: str):
 def delete_data_firm_name(file_path: str):
     param = input("Введите название организации для удаления из файла\n")
     connector = Connector(file_path)
+    vacancy_before = get_count_of_vacancy(file_path)
     try:
         connector.delete({"firm_name": param})
+        vacancy_after = get_count_of_vacancy(file_path)
     except KeyError as error:
         print(error)
-    print(f"Вакансии от {param} удалены")
+    if vacancy_before != vacancy_after:
+        print(f"Вакансии от {param} удалены")
+    else:
+        print("Данные для удаления не найдены.")
     input("Для продолжения нажмите любую клавишу.")
 
 
@@ -126,7 +130,8 @@ def get_data_from_file(file_path: str):
 
     match result:
         case ("1"):
-            get_count_of_vacancy(file_path)
+            print("Вакансий в файле:", get_count_of_vacancy(file_path))
+            input("Для продолжения нажмите любую клавишу.")
         case ("2"):
             if len(list_vacancies):
                 print("Вакансий в файле:", len(list_vacancies))
@@ -158,9 +163,7 @@ def get_count_of_vacancy(file_path: str) -> int:
 
     try:
         list_vacancies = get_vacations_from_file(file_path)
-        number_vacancies = list_vacancies
-        print(f"Вакансий в файле: {len(number_vacancies)}")
-        input("Для продолжения нажмите любую клавишу.")
+        number_vacancies = len(list_vacancies)
         return number_vacancies
     except KeyError as error:
         print(error)
@@ -179,9 +182,9 @@ def main():
         print("1 - Сделать запрос на сайт superjob.ru и сохранить данные в файл")
         print("2 - Сделать запрос на сайт hh.ru и сохранить данные в файл")
         print("3 - Получить данные из файла")
-        print("4 - Удалить вакансии от заданной организации")
+        print("4 - Удалить вакансии от заданной организации (только для superjob)")
         print("5 - Выход.")
-        # (Выход - ctrl + D)
+        # (Exit - ctrl + Z)
         try:
             result = input()
             match result:

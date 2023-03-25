@@ -70,7 +70,6 @@ class HH(Engine):
         if len(list_vacations):
             return list_vacations
         else:
-            print("!!!!!!!!!!!!!!!!")
             raise NoVacationError(f"Вакансий с заданными параметрами не\
  найдено:\nkeywords={keywords}, area={self.area},\
  page={page}, count={self.count}")
